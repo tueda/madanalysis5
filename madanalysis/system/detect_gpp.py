@@ -29,6 +29,7 @@ import os
 import sys
 import re
 import platform
+import tempfile
 from shell_command  import ShellCommand
 from madanalysis.enumeration.detect_status_type import DetectStatusType
 
@@ -70,19 +71,21 @@ class DetectGpp:
 
         # Check C++ version
         try:
-            with open(os.path.join(self.archi_info.ma5dir, "cxxtest.cc"), 'w') as f:
-                f.write("int main() { return 0; }\n")
-            command = lambda cxx_version: [
-                f"g++ -std=c++{cxx_version} "
-                f"{os.path.join(self.archi_info.ma5dir, 'cxxtest.cc')} "
-                f"-o {os.path.join(self.archi_info.ma5dir, 'cxxtest')}"
-            ]
-            for version in [11,14]: # ,17,20]: for the future
-                result = ShellCommand.Execute(command(version), self.archi_info.ma5dir, shell=True)
-                if result:
-                    setattr(self.archi_info, "cpp"+str(version), True)
-            os.remove(os.path.join(self.archi_info.ma5dir, "cxxtest.cc"))
-            os.remove(os.path.join(self.archi_info.ma5dir, "cxxtest"))
+            with tempfile.TemporaryDirectory() as temp_dir:
+                test_cc_path = os.path.join(temp_dir, "cxxtest.cc")
+                test_path = os.path.join(temp_dir, "cxxtest")
+                with open(test_cc_path, 'w') as f:
+                    f.write("int main() { return 0; }\n")
+
+                command = lambda cxx_version: [
+                    f"g++ -std=c++{cxx_version} "
+                    f"{test_cc_path} "
+                    f"-o {test_path}"
+                ]
+                for version in [11,14]: # ,17,20]: for the future
+                    result = ShellCommand.Execute(command(version), temp_dir, shell=True)
+                    if result:
+                        setattr(self.archi_info, "cpp"+str(version), True)
         except Exception as err:
             self.logger.debug(f"Unexpected {err}, {type(err)}")
 
