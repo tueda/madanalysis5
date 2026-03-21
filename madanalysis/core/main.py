@@ -600,6 +600,11 @@ class Main:
             )
         elif forced:
             self.logger.info("  => The user forces to rebuild the library.")
+
+        if not (forced or FirstUse or Missing) and os.environ.get("MA5_NO_AUTOREBUILD", ""):
+            self.logger.info("  => Skipping rebuild because MA5_NO_AUTOREBUILD is set.")
+            return True
+
         # Initializing the JobWriter
         compiler = LibraryWriter("lib", self)
 
