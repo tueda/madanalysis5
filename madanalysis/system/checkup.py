@@ -395,6 +395,10 @@ class CheckUp:
 
         # Is there a previous link?
         if os.path.islink(destination):
+            if os.path.realpath(source) == os.path.realpath(destination):
+                logging.getLogger("MA5").debug("symbolic link already exist from " + source)
+                logging.getLogger("MA5").debug("                            to   " + destination)
+                return True
             try:
                 os.remove(destination)
             except:
