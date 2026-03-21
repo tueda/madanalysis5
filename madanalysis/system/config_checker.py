@@ -35,7 +35,7 @@ class ConfigChecker:
 
     @staticmethod
     def AddIfValid(path,container):
-        dirs=glob.glob(path)
+        dirs=sorted(glob.glob(path))
         for item in dirs:
             if not (item in container):
                 container.append(item)
@@ -159,7 +159,7 @@ class ConfigChecker:
             path=os.path.normpath(path)
             if 'tools/SampleAnalyzer/ExternalSymLink' in path:
                 continue
-            rawfiles=glob.glob(path+"/"+pattern)
+            rawfiles=sorted(glob.glob(path+"/"+pattern))
 
             filtered_files=[]
             for file in rawfiles:
@@ -184,7 +184,7 @@ class ConfigChecker:
             path=os.path.normpath(path)
             if 'tools/SampleAnalyzer/ExternalSymLink' in path:
                 continue
-            rawfiles=glob.glob(path+"/"+pattern)
+            rawfiles=sorted(glob.glob(path+"/"+pattern))
 
             filtered_files=[]
             for file in rawfiles:
@@ -464,7 +464,7 @@ class ConfigChecker:
             if not getpaths:
                 self.logger.debug("-> result: "+str(self.archi_info.delphes_lib))
             self.archi_info.delphes_original_libs.extend([fl for fl in myfiles if not fl in self.archi_info.delphes_original_libs])
-            delphes_dict=glob.glob(os.path.dirname(self.archi_info.delphes_lib)+'/*.pcm')
+            delphes_dict=sorted(glob.glob(os.path.dirname(self.archi_info.delphes_lib)+'/*.pcm'))
             self.archi_info.delphes_original_libs.extend([fl for fl in delphes_dict if not fl in self.archi_info.delphes_original_libs])
 
         # Checking Delphes can be found in other folders
@@ -509,7 +509,7 @@ class ConfigChecker:
                 return False
             self.archi_info.delphes_original_libs.extend([fl for fl in myfiles if not fl in self.archi_info.delphes_original_libs])
             self.archi_info.delphes_original_libs.extend([fl for fl in myfiles if not fl in self.archi_info.delphes_original_libs])
-            delphes_dict=glob.glob(os.path.dirname(self.archi_info.delphes_lib)+'/*.pcm')
+            delphes_dict=sorted(glob.glob(os.path.dirname(self.archi_info.delphes_lib)+'/*.pcm'))
             self.archi_info.delphes_original_libs.extend([fl for fl in delphes_dict if not fl in self.archi_info.delphes_original_libs])
             if getpaths:
                self.libs=self.libs[:-1]
@@ -658,7 +658,7 @@ class ConfigChecker:
             self.archi_info.delphesMA5tune_lib      = os.path.normpath(myfiles[0]) if len(myfiles)>0 else "";
             self.archi_info.delphesMA5tune_original_libs.extend([fl for fl in myfiles \
                                                                  if not fl in self.archi_info.delphesMA5tune_original_libs])
-            delphesMA5tune_dict=glob.glob(os.path.dirname(self.archi_info.delphesMA5tune_lib)+'/*.pcm')
+            delphesMA5tune_dict=sorted(glob.glob(os.path.dirname(self.archi_info.delphesMA5tune_lib)+'/*.pcm'))
             self.archi_info.delphesMA5tune_original_libs.extend([fl for fl in delphesMA5tune_dict \
                                                                  if not fl in self.archi_info.delphesMA5tune_original_libs])
             if not getpaths:

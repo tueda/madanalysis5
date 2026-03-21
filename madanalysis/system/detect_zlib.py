@@ -66,7 +66,7 @@ class DetectZlib:
     @staticmethod
     def AddIfValid(path,container):
         path=os.path.normpath(path)
-        dirs=glob.glob(path)
+        dirs=sorted(glob.glob(path))
         for item in dirs:
             if 'tools/SampleAnalyzer/ExternalSymLink/Lib' in item:
                 continue
@@ -206,7 +206,7 @@ class DetectZlib:
         for pattern in patterns:
             filename=os.path.normpath(path+'/'+pattern)
             self.logger.debug('look for pattern '+filename+' ...')
-            thefiles = glob.glob(filename)
+            thefiles = sorted(glob.glob(filename))
             for thefile in thefiles:
                 if thefile not in result:
                     self.logger.debug('-> found: '+thefile)
