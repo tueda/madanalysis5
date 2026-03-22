@@ -25,6 +25,7 @@
 
 
 from __future__ import absolute_import
+import logging
 import os
 class Architecture(Exception):
     pass
@@ -42,8 +43,7 @@ def freeze_environment(func):
 
         # restoring the environment and sving the architecture
         self.ma5_environ.update(os.environ)
-        if not self.main.archi_info.save(self.main.archi_info.ma5dir+'/tools/architecture.ma5'):
-            raise Architecture('Cannot save the architecture')
+        self.main.archi_info.save(self.main.archi_info.ma5dir+'/tools/architecture.ma5',log_failure_as_error=False)
         os.environ.clear()
         os.environ.update(old_environ)
 

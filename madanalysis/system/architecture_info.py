@@ -139,14 +139,17 @@ class ArchitectureInfo:
     def __neq__(self,other):
         return not self.__eq__(other)
 
-    def save(self,filename):
+    def save(self,filename,log_failure_as_error=True):
 
         # Open the file
         try:
             file = open(filename,"wb")
         except:
-            logging.getLogger('MA5').error("impossible to write the configuration file '" + \
-                          filename + "'")
+            msg = "impossible to write the configuration file '" + filename + "'"
+            if log_failure_as_error:
+                logging.getLogger('MA5').error(msg)
+            else:
+                logging.getLogger('MA5').info(msg)
             return False
 
         # Dump data
