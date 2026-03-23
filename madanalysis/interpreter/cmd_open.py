@@ -90,7 +90,8 @@ class CmdOpen(CmdBase):
         import webbrowser
 
         # Opening a Web Browser window with the page
-        webbrowser.open(name)
+        if not webbrowser.open(name):
+            logging.getLogger('MA5').error("Failed to open '"+name[7:]+"'")
 
         return
 
